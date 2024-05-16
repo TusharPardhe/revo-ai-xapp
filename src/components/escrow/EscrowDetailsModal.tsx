@@ -27,7 +27,7 @@ export default function EscrowDetailsModal({
             dismissableMask
             blockScroll
             position="bottom"
-            className="rounded-4 w-100 h-75 m-0"
+            className="rounded-4 w-100 m-0"
             content={({ hide }) => (
                 <div className="p-4 rounded-top-4 bg-white w-100 h-100">
                     <div className="d-flex justify-content-end">
@@ -74,7 +74,7 @@ export default function EscrowDetailsModal({
                             <div className="d-flex flex-column justify-content-between">
                                 <div className="fw-medium">Release Date</div>
                                 <div className="fw-normal text-secondary">
-                                    {renderValue(escrowData.time)}
+                                    {renderValue(escrowData.time, { date: true })}
                                 </div>
                             </div>
                             <div className="d-flex flex-column justify-content-between">

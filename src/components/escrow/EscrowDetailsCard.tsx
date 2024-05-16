@@ -1,13 +1,19 @@
 import { EscrowData } from '@app-types/common';
 import { getRelativeTime, getTokenName, renderValue } from '@utils/common.utils';
 
-import { useMemo, useState } from 'react';
+import { CSSProperties, useMemo, useState } from 'react';
 
 import AssetsUrl from '@/config/assets.url.config';
 
 import EscrowDetailsModal from './EscrowDetailsModal';
 
-export default function EscrowDetailsCard({ escrowData }: { escrowData: EscrowData }) {
+export default function EscrowDetailsCard({
+    escrowData,
+    containerStyle,
+}: {
+    escrowData: EscrowData;
+    containerStyle?: CSSProperties;
+}) {
     const [showModal, setShowModal] = useState(false);
 
     const relativeTime = useMemo(() => {
@@ -34,9 +40,11 @@ export default function EscrowDetailsCard({ escrowData }: { escrowData: EscrowDa
                     boxShadow: 'rgba(0, 0, 0, 0.1) 2px 2px 4px 0px',
                     height: '180px',
                     minHeight: '180px',
-                    minWidth: '250px',
+                    maxWidth: '252px',
+                    minWidth: '252px',
                     border: '1px solid #00000061',
                     cursor: 'pointer',
+                    ...containerStyle,
                 }}
                 onClick={handleClick}
             >
@@ -59,7 +67,7 @@ export default function EscrowDetailsCard({ escrowData }: { escrowData: EscrowDa
                             {relativeTime}
                         </p>
                         <div className="m-0 fw-medium text-muted small mt-1">
-                            {`Coins will be released on ${renderValue(escrowData.time)}`}
+                            {`Coins will be released on ${renderValue(escrowData.time, { date: true })}`}
                         </div>
                     </div>
                     <div className="ms-auto align-self-end">

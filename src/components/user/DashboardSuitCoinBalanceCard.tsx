@@ -1,5 +1,6 @@
 import { useAppContext } from '@store/app.context';
 import { ApiCall } from '@utils/api.utils';
+import { renderValue } from '@utils/common.utils';
 
 import { useEffect, useState } from 'react';
 
@@ -50,7 +51,7 @@ export default function DashboardSuitCoinBalanceCard() {
                     </div>
                 </div>
             ) : (
-                <p className="fs-6">{suitCoinBalance}</p>
+                <p className="fs-6">{renderValue(suitCoinBalance)}</p>
             )}
         </div>
     );

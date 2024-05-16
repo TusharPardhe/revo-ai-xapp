@@ -4,7 +4,7 @@ import { ApiCall } from '@utils/api.utils';
 import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router';
 
-import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 
 import { DashboardEscrowFilter } from './DashboardEscrowFilter';
 import EscrowDetailsCard from './EscrowDetailsCard';
@@ -19,6 +19,8 @@ export default function DashboardEscrowCardCarousel({
     setUserSelection,
 }: DashboardEscrowCardCarouselProps) {
     const navigate = useNavigate();
+    const containerRef = useRef<HTMLDivElement>(null);
+
     const [escrows, setEscrows] = useState<EscrowData[]>([]);
     const {
         state: { address },
@@ -31,6 +33,12 @@ export default function DashboardEscrowCardCarousel({
     useEffect(() => {
         fetchEscrows();
     }, [userSelection, address]);
+
+    useEffect(() => {
+        if (containerRef.current) {
+            containerRef.current.scrollLeft = 0;
+        }
+    }, [escrows]);
 
     const fetchEscrows = useCallback(async () => {
         let completed = null;
@@ -51,7 +59,7 @@ export default function DashboardEscrowCardCarousel({
             },
         };
         const response = await ApiCall(request);
-        setEscrows(response?.data.escrows);
+        setEscrows(response?.data.escrows ?? []);
     }, [userSelection, address]);
 
     return (
@@ -83,6 +91,7 @@ export default function DashboardEscrowCardCarousel({
                         height: '220px',
                         scrollbarWidth: 'none',
                     }}
+                    ref={containerRef}
                 >
                     {escrows.length > 0 ? (
                         escrows.map((escrowData, index) => (

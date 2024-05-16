@@ -38,8 +38,8 @@ export default function Escrows() {
             method: 'GET',
             params: {
                 sortBy: 'time',
-                id: debouncedSearchTerm,
                 address,
+                id: debouncedSearchTerm,
             },
         };
 
@@ -81,7 +81,14 @@ export default function Escrows() {
             >
                 {escrows.length > 0 ? (
                     escrows.map((escrowData, index) => (
-                        <EscrowDetailsCard key={index} escrowData={escrowData} />
+                        <EscrowDetailsCard
+                            key={index}
+                            escrowData={escrowData}
+                            containerStyle={{
+                                maxWidth: '250px',
+                                minWidth: '330px',
+                            }}
+                        />
                     ))
                 ) : (
                     <div className="d-flex bg-body-secondary p-3 text-left align-items-center w-100 h-75 rounded-4">

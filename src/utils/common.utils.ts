@@ -29,11 +29,11 @@ export function valueToLocaleString(value: string, decimal: number = 4) {
     return value;
 }
 
-export function renderValue(value: undefined | null | string | number | object | Date, options?: { decimal?: number }) {
+export function renderValue(value: undefined | null | string | number | object | Date, options?: { decimal?: number, date?: boolean }) {
     if (value === undefined || value === null) return '-';
 
     // Check if it's date
-    if (moment(value).isValid()) {
+    if (options?.date && moment(value).isValid()) {
         return moment(value).format('DD/MM/YYYY');
     }
 
