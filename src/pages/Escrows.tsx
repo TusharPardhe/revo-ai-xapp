@@ -38,6 +38,7 @@ export default function Escrows() {
             method: 'GET',
             params: {
                 sortBy: 'time',
+                id: debouncedSearchTerm,
                 address,
             },
         };
