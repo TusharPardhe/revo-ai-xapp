@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "axios": "^1.6.8",
     "bootstrap": "5.3.3",
     "eslint-import-resolver-alias": "^1.1.2",
     "i": "^0.3.7",
