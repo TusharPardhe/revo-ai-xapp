@@ -27,3 +27,53 @@ export interface Transaction {
     };
     Fee: string;
 }
+
+export interface CreateEscrowState {
+    address: string;
+    amount: string;
+    isNewAccount: boolean;
+    seed: string;
+    date: Date | null;
+    secret: string;
+}
+
+export interface CreateEscrowStateErrors {
+    address: string;
+    amount: string;
+    seed: string;
+    date: string;
+    secret: string;
+}
+
+export interface TrustLine {
+    account: string;
+    balance: string;
+    currency: string;
+    limit: string;
+    limit_peer: string;
+    quality_in: number;
+    quality_out: number;
+}
+export interface AccountDetailsResponse {
+    data: {
+        isApprover: boolean;
+        escrowCount: {
+            total: number;
+            completed: number;
+            outstanding: number;
+        };
+        hasSuitCoinTrustline: boolean;
+        suitCoinBalance: number;
+        issuedCurrencies: string[];
+        xrpBalance: number;
+        newAccount: boolean;
+        trustLines: TrustLine[];
+    }
+}
+
+export interface NavLink {
+    icon: string;
+    text: string;
+    link: string;
+    enable: boolean;
+}

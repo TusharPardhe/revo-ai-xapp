@@ -6,16 +6,18 @@ import { ReactNode } from 'react';
 
 interface AppState {
     address: string;
+    isApprover: boolean;
 }
-
 interface AppContextType {
     state: AppState;
-    dispatch: Dispatch<SetStateAction<AppState>>;
+    dispatch: Dispatch<SetStateAction<Partial<AppState>>>;
 }
 
+const INITIAL_STATE: AppState = { address: '', isApprover: true };
+
 const defaultContext: AppContextType = {
-    state: { address: '' },
-    dispatch: (_state: SetStateAction<AppState>) => {},
+    state: INITIAL_STATE,
+    dispatch: (_state: SetStateAction<Partial<AppState>>) => {},
 };
 
 const AppContext = createContext(defaultContext);
@@ -29,7 +31,7 @@ export const useAppContext = () => {
 };
 
 export function AppProvider({ children }: { children: ReactNode }) {
-    const [state, dispatch] = useMergedState<AppState>({ address: '' });
+    const [state, dispatch] = useMergedState<AppState>(INITIAL_STATE);
 
     return <AppContext.Provider value={{ state, dispatch }}>{children}</AppContext.Provider>;
 }

@@ -1,3 +1,5 @@
+import { ROUTES } from "@/App.routes";
+import { NavLink } from "@app-types/common";
 import moment from "moment";
 import { convertHexToString } from "xrpl";
 
@@ -75,3 +77,29 @@ export function getRelativeTime(time: string) {
     })
     return moment(time).fromNow();
 }
+
+export function copyToClipboard(value: string, callback?: () => void) {
+    navigator.clipboard.writeText(value);
+    if (callback) callback();
+}
+
+export const NavBarLinks: NavLink[] = [
+    {
+        icon: 'pi pi-home',
+        text: 'Home',
+        link: ROUTES.HOME,
+        enable: true,
+    },
+    {
+        icon: 'pi pi-lock',
+        text: 'Escrows',
+        link: ROUTES.ESCROWS,
+        enable: true,
+    },
+    {
+        icon: 'pi pi-cloud-upload',
+        text: 'Profile',
+        link: ROUTES.CREATE_ESCROW,
+        enable: false,
+    },
+];

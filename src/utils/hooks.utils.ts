@@ -21,7 +21,7 @@ export function useDebounce<T>(value: T, time: number) {
 export function useMergedState<T>(initialState: T) {
     const [state, setState] = useState<T>(initialState);
 
-    const setMergedState = (newState: SetStateAction<T>) => {
+    const setMergedState = (newState: Partial<SetStateAction<T>>) => {
         setState((prevState) => ({
             ...prevState,
             ...newState,

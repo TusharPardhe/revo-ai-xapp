@@ -1,3 +1,4 @@
+import { AccountDetailsResponse } from '@app-types/common';
 import { useAppContext } from '@store/app.context';
 import { ApiCall } from '@utils/api.utils';
 import { renderValue } from '@utils/common.utils';
@@ -9,6 +10,7 @@ import AssetsUrl from '@/config/assets.url.config';
 export default function DashboardSuitCoinBalanceCard() {
     const {
         state: { address },
+        dispatch,
     } = useAppContext();
     const [suitCoinBalance, setSuitCoinBalance] = useState(0);
     const [loading, setLoading] = useState(false);
@@ -25,8 +27,9 @@ export default function DashboardSuitCoinBalanceCard() {
                 url: 'user/account/details',
                 params: { address },
             };
-            const response = await ApiCall(payload);
+            const response: AccountDetailsResponse = await ApiCall(payload);
             setSuitCoinBalance(response.data.suitCoinBalance);
+            dispatch({ isApprover: response.data.isApprover });
         } catch (error) {
             console.error('fetchAccountDetails', error);
         } finally {
