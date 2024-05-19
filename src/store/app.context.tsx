@@ -13,7 +13,7 @@ interface AppContextType {
     dispatch: Dispatch<SetStateAction<Partial<AppState>>>;
 }
 
-const INITIAL_STATE: AppState = { address: '', isApprover: true };
+const INITIAL_STATE: AppState = { address: '', isApprover: false };
 
 const defaultContext: AppContextType = {
     state: INITIAL_STATE,

@@ -1,4 +1,5 @@
 import { CreateEscrowState, CreateEscrowStateErrors } from '@app-types/common';
+import FullScreenLoader from '@components/loader/FullScreenLoader';
 import { useAppContext } from '@store/app.context';
 import { ApiCall } from '@utils/api.utils';
 import { useMergedState } from '@utils/hooks.utils';
@@ -42,6 +43,8 @@ export default function CreateEscrow() {
     } = useAppContext();
 
     const [userSelection, setUserSelection] = useState<null | boolean>(null);
+
+    const [loading, setLoading] = useState<boolean>(false);
 
     const [errors, setErrors] = useState<CreateEscrowStateErrors>(INITAL_ERRORS_STATE);
 
@@ -159,7 +162,7 @@ export default function CreateEscrow() {
         if (!isValid) return;
 
         const wallet = Wallet.fromSeed(secret);
-
+        setLoading(true);
         try {
             // Fund and add trustline to the new account
             if (isNewAccount) {
@@ -216,12 +219,6 @@ export default function CreateEscrow() {
             });
 
             if (escrowWalletTx.result.engine_result === 'tesSUCCESS') {
-                toast.current?.show({
-                    severity: 'success',
-                    summary: 'Escrow added successfully',
-                    life: 3000,
-                });
-
                 await ApiCall({
                     method: 'POST',
                     url: 'user/save/account/escrow',
@@ -232,6 +229,11 @@ export default function CreateEscrow() {
                         approvedBy: escrowerAddress,
                         time: date,
                     },
+                });
+                toast.current?.show({
+                    severity: 'success',
+                    summary: 'Escrow added successfully',
+                    life: 3000,
                 });
             } else {
                 toast.current?.show({
@@ -250,6 +252,8 @@ export default function CreateEscrow() {
                     (error as Error).message || 'Something went wrong, please try again later.',
                 life: 3000,
             });
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -261,6 +265,7 @@ export default function CreateEscrow() {
             }}
         >
             <Toast ref={toast} position="top-center" />
+            <FullScreenLoader loading={loading} message="Creating Escrow..." />
             <div className="d-flex flex-column text-start p-4">
                 <h2 className="fw-bold fs-1 mb-0 pt-3 px-1">Create Escrows</h2>
                 <p className="fs-6 text-body-secondary mt-1 px-1">
