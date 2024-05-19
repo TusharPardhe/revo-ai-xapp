@@ -54,7 +54,6 @@ export default function CreateEscrow() {
             const { name, value } = e.target;
             if (name === 'address' && isNewAccount) return; // Prevent changing address if new account
             setState({ [name]: value });
-            console.log('name', name, 'value', value);
             setErrors((prev) => ({ ...prev, [name]: '' }));
         },
         [setState]
@@ -116,49 +115,43 @@ export default function CreateEscrow() {
         return isValid;
     };
 
-    const addSuitTrustlineToNewAccount = useCallback(
-        async (client: Client) => {
-            const trustLine: TrustSet = {
-                TransactionType: 'TrustSet',
-                Account: state.address,
-                LimitAmount: {
-                    currency: SUIT_COIN_HEX,
-                    value: SUIT_COIN_LIMIT,
-                    issuer: SUIT_COIN_ISSUER,
-                },
-                Flags: 131072,
-                Fee: '12',
-            };
+    const addSuitTrustlineToNewAccount = async (client: Client) => {
+        const trustLine: TrustSet = {
+            TransactionType: 'TrustSet',
+            Account: state.address,
+            LimitAmount: {
+                currency: SUIT_COIN_HEX,
+                value: SUIT_COIN_LIMIT,
+                issuer: SUIT_COIN_ISSUER,
+            },
+            Flags: 131072,
+            Fee: '12',
+        };
 
-            const newWallet = Wallet.fromSeed(state.seed);
-            await client
-                .submitAndWait(trustLine, {
-                    wallet: newWallet,
-                    autofill: true,
-                })
-                .catch((err) => {
-                    throw new Error(err);
-                });
-        },
-        [state.address, state.seed]
-    );
+        const newWallet = Wallet.fromSeed(state.seed);
+        await client
+            .submitAndWait(trustLine, {
+                wallet: newWallet,
+                autofill: true,
+            })
+            .catch((err) => {
+                throw new Error(err);
+            });
+    };
 
-    const handleUserSelection = useCallback(
-        (selection: boolean) => {
-            if (selection) {
-                generateNewWallet();
-                setState({ isNewAccount: true });
-            }
-            setUserSelection(selection);
-        },
-        [generateNewWallet]
-    );
+    const handleUserSelection = (selection: boolean) => {
+        if (selection) {
+            generateNewWallet();
+            setState({ isNewAccount: true });
+        }
+        setUserSelection(selection);
+    };
 
-    const handleReset = useCallback(() => {
+    const handleReset = () => {
         setState(INITIAL_STATE);
         setUserSelection(null);
         setErrors(INITAL_ERRORS_STATE);
-    }, [setState]);
+    };
 
     const handleCreateEscrow = async () => {
         const client = new Client(import.meta.env.VITE_XRPL_SERVER);
@@ -251,6 +244,12 @@ export default function CreateEscrow() {
             handleReset();
         } catch (error) {
             console.error(error);
+            toast.current?.show({
+                severity: 'error',
+                summary:
+                    (error as Error).message || 'Something went wrong, please try again later.',
+                life: 3000,
+            });
         }
     };
 
