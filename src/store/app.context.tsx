@@ -1,7 +1,8 @@
 // context.ts
 import { useMergedState } from '@utils/hooks.utils';
+import { XummSdkJwt } from 'xumm-sdk';
 
-import { Dispatch, SetStateAction, createContext, useContext } from 'react';
+import { Dispatch, SetStateAction, createContext, useContext, useEffect } from 'react';
 import { ReactNode } from 'react';
 
 interface AppState {
@@ -32,6 +33,14 @@ export const useAppContext = () => {
 
 export function AppProvider({ children }: { children: ReactNode }) {
     const [state, dispatch] = useMergedState<AppState>(INITIAL_STATE);
+
+    const xummSdk = new XummSdkJwt(import.meta.env.VITE_XUMM_API_KEY);
+
+    useEffect(() => {
+        xummSdk.getOttData().then((ottData): void => {
+            dispatch({ address: ottData.account ?? '' });
+        });
+    }, []);
 
     return <AppContext.Provider value={{ state, dispatch }}>{children}</AppContext.Provider>;
 }

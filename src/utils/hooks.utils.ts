@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from 'react';
 
 export function useDebounce<T>(value: T, time: number) {
     const [state, setState] = useState<T>(value);
@@ -10,10 +10,8 @@ export function useDebounce<T>(value: T, time: number) {
 
         return () => {
             clearTimeout(timeout);
-        }
-    },
-        [value, time]);
-
+        };
+    }, [value, time]);
 
     return state;
 }

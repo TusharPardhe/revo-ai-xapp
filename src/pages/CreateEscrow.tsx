@@ -164,6 +164,8 @@ export default function CreateEscrow() {
         const wallet = Wallet.fromSeed(secret);
         setLoading(true);
         try {
+            await client.connect();
+
             // Fund and add trustline to the new account
             if (isNewAccount) {
                 const transferXRP: Payment = {
@@ -253,6 +255,7 @@ export default function CreateEscrow() {
                 life: 3000,
             });
         } finally {
+            await client.disconnect();
             setLoading(false);
         }
     };
