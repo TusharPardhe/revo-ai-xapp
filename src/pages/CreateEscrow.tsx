@@ -1,4 +1,5 @@
 import { CreateEscrowState, CreateEscrowStateErrors } from '@app-types/common';
+import FilledButton from '@components/button/FilledButton';
 import FullScreenLoader from '@components/loader/FullScreenLoader';
 import { useAppContext } from '@store/app.context';
 import { ApiCall } from '@utils/api.utils';
@@ -269,27 +270,28 @@ export default function CreateEscrow() {
         >
             <Toast ref={toast} position="top-center" />
             <FullScreenLoader loading={loading} message="Creating Escrow..." />
-            <div className="d-flex flex-column text-start p-4">
+            <div
+                className="d-flex flex-column text-start px-4 pb-4"
+                style={{
+                    paddingTop: 'env(safe-area-inset-top)',
+                }}
+            >
                 <h2 className="fw-bold fs-1 mb-0 pt-3 px-1">Create Escrows</h2>
                 <p className="fs-6 text-body-secondary mt-1 px-1">
                     Securely stash away coins for the investors.
                 </p>
             </div>
             {userSelection === null ? (
-                <div className="d-flex flex-column align-items-center px-4">
-                    <Button
+                <div className="d-flex flex-column gap-3 align-items-center px-4">
+                    <FilledButton
                         label="New Account?"
-                        severity="secondary"
-                        className="rounded-4 w-100 mb-2"
-                        outlined
                         onClick={() => handleUserSelection(true)}
+                        buttonClassName="w-100"
                     />
-                    <Button
+                    <FilledButton
                         label="Existing Account?"
-                        severity="secondary"
-                        outlined
-                        className="rounded-4 w-100"
                         onClick={() => handleUserSelection(false)}
+                        buttonClassName="w-100"
                     />
                 </div>
             ) : (

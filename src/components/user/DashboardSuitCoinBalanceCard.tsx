@@ -29,7 +29,10 @@ export default function DashboardSuitCoinBalanceCard() {
             };
             const response: AccountDetailsResponse = await ApiCall(payload);
             setSuitCoinBalance(response.data.suitCoinBalance);
-            dispatch({ isApprover: response.data.isApprover });
+            dispatch({
+                isApprover: response.data.isApprover,
+                xrpBalance: response.data.xrpBalance,
+            });
         } catch (error) {
             console.error('fetchAccountDetails', error);
         } finally {

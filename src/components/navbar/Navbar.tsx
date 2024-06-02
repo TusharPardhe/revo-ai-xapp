@@ -1,4 +1,5 @@
 import { NavLink } from '@app-types/common';
+import { Keyboard } from '@capacitor/keyboard';
 import { useAppContext } from '@store/app.context';
 import { NavBarLinks } from '@utils/common.utils';
 import { Button } from 'primereact/button';
@@ -13,6 +14,9 @@ const BottomNavbar = () => {
     const { isApprover } = useAppContext().state;
     const [navLinks, setNavLinks]: [NavLink[], React.Dispatch<React.SetStateAction<NavLink[]>>] =
         useState(NavBarLinks);
+    const [hideNavbar, setHideNavbar] = useState(false);
+
+    const isLandingPage = window.location.pathname === ROUTES.LANDING;
 
     const onButtonClick = (link: string) => navigate(link);
 
@@ -24,10 +28,24 @@ const BottomNavbar = () => {
             return navLink;
         });
         setNavLinks(updatedNavLinks);
+
+        Keyboard.addListener('keyboardWillShow', () => {
+            setHideNavbar(true);
+        });
+
+        Keyboard.addListener('keyboardWillHide', () => {
+            setHideNavbar(false);
+        });
     }, [isApprover]);
 
+    if (isLandingPage) {
+        return null;
+    }
+
     return (
-        <div className="d-flex fixed-bottom py-3 gap-1 justify-content-center ">
+        <div
+            className={` ${hideNavbar ? 'd-none' : 'd-flex'} fixed-bottom py-3 gap-1 justify-content-center`}
+        >
             {navLinks
                 .filter(({ enable }) => enable)
                 .map((link) => (

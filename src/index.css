@@ -1,5 +1,5 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Open Sans';
   line-height: 1.5;
   font-weight: 400;
 
@@ -47,6 +47,11 @@ h1 {
   animation: moveBackground 10s cubic-bezier(0.65, 0.05, 0.36, 1) infinite
 }
 
+.transition-fade {
+  opacity: 0;
+  animation: fadeIn 0.5s ease-in-out forwards;
+}
+
 @keyframes moveBackground {
   0% {
     background-position: 0% 50%;
@@ -56,5 +61,14 @@ h1 {
   }
   100% {
     background-position: 0% 50%;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }

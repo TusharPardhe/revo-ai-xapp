@@ -1,7 +1,8 @@
-import { ROUTES } from "@/App.routes";
-import { NavLink } from "@app-types/common";
-import moment from "moment";
-import { convertHexToString } from "xrpl";
+import { NavLink } from '@app-types/common';
+import moment from 'moment';
+import { convertHexToString } from 'xrpl';
+
+import { ROUTES } from '@/App.routes';
 
 export function getTokenName(value: string) {
     return value.length === 40 ? convertHexToString(value).replace(/\u0000/g, '') : value;
@@ -18,20 +19,25 @@ export function numberWithCommas(x: number) {
     }
 
     return parts.join('.');
-};
+}
 
 export function valueToLocaleString(value: string, decimal: number = 4) {
     if (!value) return '-';
 
-    if (/^\d*\.?\d+$/.test(value)) return parseFloat(value).toLocaleString(undefined, {
-        minimumFractionDigits: decimal,
-        maximumFractionDigits: decimal,
-    })
+    if (/^\d*\.?\d+$/.test(value)) {
+        return parseFloat(value).toLocaleString(undefined, {
+            minimumFractionDigits: decimal,
+            maximumFractionDigits: decimal,
+        });
+    }
 
     return value;
 }
 
-export function renderValue(value: undefined | null | string | number | object | Date, options?: { decimal?: number, date?: boolean }) {
+export function renderValue(
+    value: undefined | null | string | number | object | Date,
+    options?: { decimal?: number; date?: boolean }
+) {
     if (value === undefined || value === null) return '-';
 
     // Check if it's date
@@ -52,29 +58,29 @@ export function renderValue(value: undefined | null | string | number | object |
     }
 
     return value;
-};
+}
 
 export function getRelativeTime(time: string) {
     moment.locale('en', {
         relativeTime: {
-            future: "in %s",
-            past: "%s ago",
+            future: 'in %s',
+            past: '%s ago',
             s: 'a few seconds',
             ss: '%d seconds',
-            m: "a minute",
-            mm: "%d minutes",
-            h: "An hour",
-            hh: "%d hours",
-            d: "a day",
-            dd: "%d days",
-            w: "A week",
-            ww: "%d weeks",
-            M: "a month",
-            MM: "%d months",
-            y: "a year",
-            yy: "%d years"
-        }
-    })
+            m: 'a minute',
+            mm: '%d minutes',
+            h: 'An hour',
+            hh: '%d hours',
+            d: 'a day',
+            dd: '%d days',
+            w: 'A week',
+            ww: '%d weeks',
+            M: 'a month',
+            MM: '%d months',
+            y: 'a year',
+            yy: '%d years',
+        },
+    });
     return moment(time).fromNow();
 }
 
@@ -101,5 +107,11 @@ export const NavBarLinks: NavLink[] = [
         text: 'Profile',
         link: ROUTES.CREATE_ESCROW,
         enable: false,
+    },
+    {
+        icon: 'pi pi-cog',
+        text: 'Settings',
+        link: ROUTES.ACCOUNT_SETTINGS,
+        enable: true,
     },
 ];

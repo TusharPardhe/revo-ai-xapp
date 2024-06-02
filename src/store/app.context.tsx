@@ -1,20 +1,21 @@
-// context.ts
 import { useMergedState } from '@utils/hooks.utils';
-import { XummSdkJwt } from 'xumm-sdk';
 
 import { Dispatch, SetStateAction, createContext, useContext, useEffect } from 'react';
 import { ReactNode } from 'react';
 
+import { getObjectFromAppStorage } from './capacitor';
+
 interface AppState {
     address: string;
     isApprover: boolean;
+    xrpBalance: number;
 }
 interface AppContextType {
     state: AppState;
     dispatch: Dispatch<SetStateAction<Partial<AppState>>>;
 }
 
-const INITIAL_STATE: AppState = { address: '', isApprover: false };
+const INITIAL_STATE: AppState = { address: '', isApprover: false, xrpBalance: 0 };
 
 const defaultContext: AppContextType = {
     state: INITIAL_STATE,
@@ -34,11 +35,9 @@ export const useAppContext = () => {
 export function AppProvider({ children }: { children: ReactNode }) {
     const [state, dispatch] = useMergedState<AppState>(INITIAL_STATE);
 
-    const xummSdk = new XummSdkJwt(import.meta.env.VITE_XUMM_API_KEY);
-
     useEffect(() => {
-        xummSdk.getOttData().then((ottData): void => {
-            dispatch({ address: ottData.account ?? '' });
+        getObjectFromAppStorage('walletAddress').then((address) => {
+            dispatch({ address: address ?? '' });
         });
     }, []);
 

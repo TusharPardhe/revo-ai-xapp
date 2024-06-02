@@ -49,7 +49,12 @@ export default function Escrows() {
 
     return (
         <div className="d-flex flex-column w-100">
-            <div className="d-flex flex-column text-start p-4">
+            <div
+                className="d-flex flex-column text-start px-4 pb-4"
+                style={{
+                    paddingTop: 'env(safe-area-inset-top)',
+                }}
+            >
                 <h2 className="fw-bold fs-1 mb-0 pt-3 px-1">Escrows</h2>
                 <p className="fs-6 text-body-secondary mt-1 px-1">Your coins in the vault.</p>
             </div>
