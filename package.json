@@ -7,10 +7,12 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "sync": "tsc && vite build && npx cap sync",
-    "dev:android": "npx cap open android",
-    "dev:ios": "npx cap open ios",
+    "android": "npx cap open android",
+    "ios": "npx cap open ios",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "ionic:build": "npm run build",
+    "ionic:serve": "npm run dev"
   },
   "dependencies": {
     "@capacitor/android": "^6.0.0",
@@ -47,6 +49,7 @@
     "eslint-plugin-react": "7.34.2",
     "eslint-plugin-react-hooks": "4.6.2",
     "eslint-plugin-react-refresh": "0.4.7",
+    "vite-plugin-remove-console": "^2.2.0",
     "typescript": "5.4.5",
     "vite": "5.2.12"
   }

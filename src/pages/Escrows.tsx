@@ -1,5 +1,6 @@
 import { EscrowData } from '@app-types/common';
 import EscrowDetailsCard from '@components/escrow/EscrowDetailsCard';
+import FullScreenLoader from '@components/loader/FullScreenLoader';
 import { useAppContext } from '@store/app.context';
 import { ApiCall } from '@utils/api.utils';
 import { useDebounce } from '@utils/hooks.utils';
@@ -10,6 +11,7 @@ import { useCallback, useEffect, useState } from 'react';
 export default function Escrows() {
     const [searchTerm, setSearchTerm] = useState('');
     const [hasFocus, setHasFocus] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [escrows, setEscrows] = useState<EscrowData[]>([]);
     const debouncedSearchTerm = useDebounce(searchTerm, 500);
     const {
@@ -33,18 +35,25 @@ export default function Escrows() {
     }, [debouncedSearchTerm, address]);
 
     const fetchEscrows = useCallback(async () => {
-        const request = {
-            url: '/user/escrows',
-            method: 'GET',
-            params: {
-                sortBy: 'time',
-                address,
-                id: debouncedSearchTerm,
-            },
-        };
+        try {
+            setLoading(true);
+            const request = {
+                url: '/user/escrows',
+                method: 'GET',
+                params: {
+                    sortBy: 'time',
+                    address,
+                    id: debouncedSearchTerm,
+                },
+            };
 
-        const response = await ApiCall(request);
-        setEscrows(response?.data.escrows);
+            const response = await ApiCall(request);
+            setEscrows(response?.data.escrows);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
     }, [debouncedSearchTerm, address]);
 
     return (
@@ -58,6 +67,7 @@ export default function Escrows() {
                 <h2 className="fw-bold fs-1 mb-0 pt-3 px-1">Escrows</h2>
                 <p className="fs-6 text-body-secondary mt-1 px-1">Your coins in the vault.</p>
             </div>
+            <FullScreenLoader loading={loading} />
             <div className="d-flex justify-content-center mb-4">
                 <span className="p-input-icon-left w-100 px-4">
                     <i className="pi pi-search ps-3" />

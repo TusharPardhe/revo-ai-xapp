@@ -34,7 +34,7 @@ export default function DashboardSuitCoinBalanceCard() {
                 xrpBalance: response.data.xrpBalance,
             });
         } catch (error) {
-            console.error('fetchAccountDetails', error);
+            console.error(error);
         } finally {
             setLoading(false);
         }

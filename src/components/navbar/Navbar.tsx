@@ -44,7 +44,7 @@ const BottomNavbar = () => {
 
     return (
         <div
-            className={` ${hideNavbar ? 'd-none' : 'd-flex'} fixed-bottom py-3 gap-1 justify-content-center`}
+            className={` ${hideNavbar ? 'd-none' : 'd-flex'} fixed-bottom py-3 gap-1 justify-content-center z-2`}
         >
             {navLinks
                 .filter(({ enable }) => enable)
